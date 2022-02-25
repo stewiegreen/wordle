@@ -5,7 +5,7 @@ from colorama import Fore, Back, Style
 
 MAX_TRIES = 6
 WORD_LENGTH = 5
-DOUBLE_LETTER = '*'
+USED_LETTER = '*'
 
 
 alphabet = ['f', 'g', 'm', 'b', 'x', 'q', 'n', 'v', 'r', 'p', 'o', 'i',
@@ -13,6 +13,13 @@ alphabet = ['f', 'g', 'm', 'b', 'x', 'q', 'n', 'v', 'r', 'p', 'o', 'i',
 
 
 attempts = []
+
+
+class LetterStatus:
+    def __init__(self, letter: str):
+        self.letter = letter
+        self.in_position = False
+        self.in_word = False
 
 
 def find_a_word():
@@ -51,6 +58,9 @@ def check_in_word(guess, secret):
 
 
 def print_attempts():
+
+    print('\n')
+
     my_string = ""
     for i in range(len(attempts)):
         for x in attempts[i]:
@@ -62,30 +72,37 @@ def print_attempts():
     return my_string
 
 
-def double_secret():
-    make_list = []
-    for i in range(WORD_LENGTH):
-        make_list.append(secret[i])
-
-
 def wordle():
     while True:
         guess = input("Guess the word: ").upper()
         while len(guess) != WORD_LENGTH:
-            guess = input("Sorry, 5 letter's only.  Try again: ")
+            guess = input("Sorry, 5 letter's only.  Try again: ").upper()
         attempts.append([word for word in guess])
         remaining_secret = list(secret)
         for i in range(WORD_LENGTH):
             if guess[i] == remaining_secret[i]:
                 attempts[-1][i] = Fore.GREEN + guess[i] + Fore.RESET
-                remaining_secret[i] = DOUBLE_LETTER
-
-            elif guess[i] in remaining_secret:
-                attempts[-1][i] = Fore.YELLOW + guess[i] + Fore.RESET
-
+                remaining_secret[i] = USED_LETTER
             else:
-                attempts[-1][i] = Fore.RED + guess[i] + Fore.RESET
+                continue
+
+        for y in range(WORD_LENGTH):
+            if remaining_secret[y] == USED_LETTER:
+                continue
+            elif guess[y] in remaining_secret:
+                attempts[-1][y] = Fore.YELLOW + guess[y] + Fore.RESET
+                remaining_secret[i] = USED_LETTER
+
+        for x in range(WORD_LENGTH):
+            if remaining_secret[x] == USED_LETTER:
+                continue
+            elif guess[x] not in remaining_secret:
+                attempts[-1][x] = Fore.RED + guess[x] + Fore.RESET
+            else:
+                continue
+
         print(print_attempts())
+        print(attempts)
         if hasWon(guess) == True:
             print('Congratulations! You Won!')
             break
@@ -96,5 +113,4 @@ def wordle():
 
 secret = find_a_word()
 print(secret)
-# print(secret)
 wordle()
