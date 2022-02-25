@@ -74,12 +74,13 @@ def wordle():
         while len(guess) != WORD_LENGTH:
             guess = input("Sorry, 5 letter's only.  Try again: ")
         attempts.append([word for word in guess])
-
+        remaining_secret = list(secret)
         for i in range(WORD_LENGTH):
-            if guess[i] == secret[i]:
+            if guess[i] == remaining_secret[i]:
                 attempts[-1][i] = Fore.GREEN + guess[i] + Fore.RESET
+                remaining_secret[i] = DOUBLE_LETTER
 
-            elif guess[i] in secret:
+            elif guess[i] in remaining_secret:
                 attempts[-1][i] = Fore.YELLOW + guess[i] + Fore.RESET
 
             else:
@@ -94,6 +95,6 @@ def wordle():
 
 
 secret = find_a_word()
-
+print(secret)
 # print(secret)
 wordle()
