@@ -83,26 +83,16 @@ def wordle():
             if guess[i] == remaining_secret[i]:
                 attempts[-1][i] = Fore.GREEN + guess[i] + Fore.RESET
                 remaining_secret[i] = USED_LETTER
-            else:
-                continue
 
         for y in range(WORD_LENGTH):
-            if remaining_secret[y] == USED_LETTER:
-                continue
-            elif guess[y] in remaining_secret:
-                attempts[-1][y] = Fore.YELLOW + guess[y] + Fore.RESET
-                remaining_secret[i] = USED_LETTER
-
-        for x in range(WORD_LENGTH):
-            if remaining_secret[x] == USED_LETTER:
-                continue
-            elif guess[x] not in remaining_secret:
-                attempts[-1][x] = Fore.RED + guess[x] + Fore.RESET
-            else:
-                continue
+            for r in range(WORD_LENGTH):
+                if guess[y] == remaining_secret[r]:
+                    remaining_secret[r] = USED_LETTER
+                    inserted_letter = Fore.YELLOW + guess[y] + Fore.RESET
+                    attempts[-1][y] = inserted_letter
 
         print(print_attempts())
-        print(attempts)
+        print(remaining_secret)
         if hasWon(guess) == True:
             print('Congratulations! You Won!')
             break
@@ -113,4 +103,5 @@ def wordle():
 
 secret = find_a_word()
 print(secret)
+
 wordle()
