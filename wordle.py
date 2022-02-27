@@ -92,7 +92,7 @@ def wordle():
                     attempts[-1][y] = inserted_letter
 
         print(print_attempts())
-        print(remaining_secret)
+
         if hasWon(guess) == True:
             print('Congratulations! You Won!')
             break
@@ -102,6 +102,5 @@ def wordle():
 
 
 secret = find_a_word()
-print(secret)
 
 wordle()
